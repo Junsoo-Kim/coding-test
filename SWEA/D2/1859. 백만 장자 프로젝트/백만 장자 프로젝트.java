@@ -1,0 +1,38 @@
+import java.util.*;
+import java.io.*;
+
+class Solution{
+ 	public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        
+        for(int t = 1; t <= T; t++){
+            // 변수 정의 및 초기화 
+            int N = Integer.parseInt(br.readLine());
+        	StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            ArrayList<Integer> priceList = new ArrayList<>();
+            for(int i = 0; i < N; i++){
+            	priceList.add(Integer.parseInt(st.nextToken()));
+            }
+            Long result = 0l;
+            
+            // priceList에서 아이템을 계속 제거하며 결과값 찾기
+            while(priceList.size() != 0){
+            	// priceList에서 최대값과 인덱스 찾기
+                // 같은 값이 있으면 가장 뒤의 인덱스로
+                int max = Collections.max(priceList);
+                int maxIndex = priceList.lastIndexOf(max);
+                       
+                // 최대값 이전의 물건은 전부 최대값 가격으로 판매
+                for(int i = 0; i < maxIndex; i++){
+                	result += max - priceList.get(i);
+                }
+                
+                // 최대값과 그 이전의 물건들을 리스트에서 전부 제거
+                priceList = new ArrayList<>(priceList.subList(maxIndex + 1, priceList.size()));
+            }
+            
+            System.out.println("#" + t + " " + result);
+        }
+    }
+}

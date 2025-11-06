@@ -18,11 +18,17 @@ class Solution{
             int start = 0;
             
             // priceList에서 아이템을 계속 제거하며 결과값 찾기
-            while(priceList.size() != 0){
+            while(start < N){
             	// priceList에서 최대값과 인덱스 찾기
                 // 같은 값이 있으면 가장 뒤의 인덱스로
-                int max = Collections.max(priceList);
-                int maxIndex = priceList.lastIndexOf(max);
+                int max = -1;
+    			int maxIndex = -1;
+    			for(int i = start; i < N; i++){
+        			if(priceList.get(i) >= max){
+                		max = priceList.get(i);
+            			maxIndex = i;
+        			}
+    			}
                        
                 // 최대값 이전의 물건은 전부 최대값 가격으로 판매
                 for(int i = start; i < maxIndex; i++){
@@ -31,7 +37,7 @@ class Solution{
                 
                 // 최대값과 그 이전의 물건들을 리스트에서 전부 제거
                 // 실제로 요소를 제거하지 말고 제거한 것처럼 취급하도록
-                priceList = new ArrayList<>(priceList.subList(maxIndex + 1, priceList.size()));
+                start = maxIndex + 1;
             }
             
             System.out.println("#" + t + " " + result);

@@ -15,6 +15,7 @@ class Solution{
             	priceList.add(Integer.parseInt(st.nextToken()));
             }
             Long result = 0l;
+            int start = 0;
             
             // priceList에서 아이템을 계속 제거하며 결과값 찾기
             while(priceList.size() != 0){
@@ -24,11 +25,12 @@ class Solution{
                 int maxIndex = priceList.lastIndexOf(max);
                        
                 // 최대값 이전의 물건은 전부 최대값 가격으로 판매
-                for(int i = 0; i < maxIndex; i++){
+                for(int i = start; i < maxIndex; i++){
                 	result += max - priceList.get(i);
                 }
                 
                 // 최대값과 그 이전의 물건들을 리스트에서 전부 제거
+                // 실제로 요소를 제거하지 말고 제거한 것처럼 취급하도록
                 priceList = new ArrayList<>(priceList.subList(maxIndex + 1, priceList.size()));
             }
             

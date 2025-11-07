@@ -9,6 +9,7 @@ class Solution{
         for(int t = 1; t <= T; t++){
             int result = 1;
             int[][] sudoku = new int[9][9];
+            HashSet<Integer> sudokuSet = new HashSet<>();
             for(int i = 0; i < 9; i++){
          		StringTokenizer st = new StringTokenizer(br.readLine());
                 for(int j = 0; j < 9; j++){
@@ -20,7 +21,7 @@ class Solution{
             // 가로줄 체크
             for(int i = 0; i < 9; i++){
                 int sum = 0;
-            	HashSet<Integer> sudokuSet = new HashSet<>();
+            	sudokuSet.clear();
                 for(int j = 0; j < 9; j++){
                     sum += sudoku[i][j];
                     sudokuSet.add(sudoku[i][j]);
@@ -34,7 +35,7 @@ class Solution{
             // 세로줄 체크
             for(int i = 0; i < 9; i++){
                 int sum = 0;
-            	HashSet<Integer> sudokuSet = new HashSet<>();
+            	sudokuSet.clear();
                 for(int j = 0; j < 9; j++){
                     sum += sudoku[j][i];
                     sudokuSet.add(sudoku[j][i]);
@@ -49,7 +50,7 @@ class Solution{
             for(int i = 0; i < 9; i+=3){
                 for(int j = 0; j < 9; j+=3){
                     int sum = 0;
-            		HashSet<Integer> sudokuSet = new HashSet<>();
+            		sudokuSet.clear();
                     sum += sudoku[i][j] + sudoku[i][j + 1] + sudoku[i][j + 2]
                         + sudoku[i + 1][j] + sudoku[i + 1][j + 1] + sudoku[i + 1][j + 2]
                         + sudoku[i + 2][j] + sudoku[i + 2][j + 1] + sudoku[i + 2][j + 2];

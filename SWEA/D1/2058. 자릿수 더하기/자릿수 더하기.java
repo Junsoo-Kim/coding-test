@@ -1,16 +1,15 @@
-import java.util.*;
 import java.io.*;
 
 class Solution{
-    public static void main(String[] args) throws Exception{
-    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] nums = br.readLine().split("");
+ 	public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String N = br.readLine();
         int result = 0;
         
-        for(int i = 0; i < nums.length; i++){
-         	result += Integer.parseInt(nums[i]);   
+        for(int i = 0; i < N.length(); i++) {
+        	result += N.charAt(i) - '0';
         }
         
-        System.out.println(result);
+        System.out.print(result);
     }
 }

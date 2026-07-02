@@ -8,40 +8,73 @@ class Solution{
         int T = Integer.parseInt(br.readLine());
         
         for(int t = 1; t <= T; t++){
-            sb.setLength(0);
             sb.append("#" + t + "\n");
+            
             int N = Integer.parseInt(br.readLine());
-            int[][][] result = new int [4][N][N];
             
-            // result[0]은 입력값
-            for(int i = 0; i < N; i++){
-                StringTokenizer st = new StringTokenizer(br.readLine());
-             	for(int j = 0; j < N; j++){
-                	result[0][i][j] = Integer.parseInt(st.nextToken());   
-                }
+            // result 초기화
+            String[] result = new String[N];
+            for(int i = 0; i < N; i++) {
+            	result[i] = "";
             }
             
-            // 가로 줄을 돌면서 열은 고정시키고 행은 y가 x로 바뀜
-            for(int i = 1; i < 4; i++){ // 페이지
-             	for(int j = 0; j < N; j++){ // 행
-                	for(int k = 0; k < N; k++){ // 열
-                        result[i][k][N-1-j] = result[i-1][j][k];
-                    }
-                }
+            // board 초기화
+            int[][] board = new int[N][N];
+            for(int i = 0; i < N; i++) {
+            	StringTokenizer st = new StringTokenizer(br.readLine());
+            	for(int j = 0; j < N; j++) {
+            		board[i][j] = Integer.parseInt(st.nextToken());
+            	}
             }
             
-        	// 1페이지 1행 -> 2페이지 1행 -> 3페이지 1행 -> 1페이지 2행 ...
-            for(int i = 0; i < N; i++){ // 행
-             	for(int j = 1; j < 4; j++){ // 페이지
-                 	for(int k = 0; k < N; k++){ // 열
-                    	sb.append(result[j][i][k]);
-                    }
-                    sb.append(" ");
-                }
-                sb.append("\n");
+            // 90도 회전
+            board = spin90Degree(board);
+            for(int i = 0; i < N; i++) {
+            	String temp = "";
+            	for(int j = 0; j < N; j++) {
+            		temp += board[i][j];
+            	}
+            	result[i] = result[i] + temp + " ";
             }
             
-            System.out.print(sb);
+            // 180도 회전
+            board = spin90Degree(board);
+            for(int i = 0; i < N; i++) {
+            	String temp = "";
+            	for(int j = 0; j < N; j++) {
+            		temp += board[i][j];
+            	}
+            	result[i] = result[i] + temp + " ";
+            }
+            
+            // 270도 회전
+            board = spin90Degree(board);
+            for(int i = 0; i < N; i++) {
+            	String temp = "";
+            	for(int j = 0; j < N; j++) {
+            		temp += board[i][j];
+            	}
+            	result[i] = result[i] + temp + " ";
+            }
+            
+            for(int i = 0; i < N; i++) {
+            	sb.append(result[i] + "\n");
+            }
         }
+        
+        System.out.print(sb);
     }
+ 	
+ 	private static int[][] spin90Degree(int[][] board){
+ 		int[][] newBoard = new int[board.length][board.length];
+ 		
+ 		for(int i = 0; i < board.length; i++) {
+ 			for(int j = 0; j < board.length; j++) {
+ 				// nx = y, ny = (N - 1) - x
+ 				newBoard[j][(board.length - 1) - i] = board[i][j];
+ 			}
+ 		}
+ 		
+ 		return newBoard;
+ 	}
 }

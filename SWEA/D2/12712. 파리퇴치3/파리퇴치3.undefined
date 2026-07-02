@@ -1,0 +1,79 @@
+import java.util.*;
+import java.io.*;
+
+class Solution{
+	static int[][] board;
+	
+ 	public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        
+        for(int t = 1; t <= T; t++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
+            int max = Integer.MIN_VALUE;
+            
+            board = new int[N][N];
+            for(int i = 0; i < N; i++) {
+            	st = new StringTokenizer(br.readLine());
+            	for(int j = 0; j < N; j++) {
+            		board[i][j] = Integer.parseInt(st.nextToken());
+            	}
+            }
+            
+            for(int i = 0; i < N; i++) {
+            	for(int j = 0; j < N; j++) {
+            		max = Math.max(max, getX(M, i, j));
+            		max = Math.max(max, getCross(M, i, j));
+            	}
+            }
+            
+            sb.append("#" + t + " " + max + "\n");
+        }
+        System.out.print(sb);
+    }
+ 	
+ 	private static int getX(int M, int x, int y){
+ 		int sum = board[x][y];
+ 		int[] dx = new int[] {1, 1, -1, -1};
+ 		int[] dy = new int[] {1, -1, 1, -1};
+ 		
+ 		for(int i = 1; i < M; i++) {
+ 			for(int j = 0; j < 4; j++) {
+ 				int nx = x + (dx[j] * i);
+ 				int ny = y + (dy[j] * i);
+ 				
+ 				if(nx < 0 || board.length <= nx || ny < 0 || board.length <= ny) {
+ 					continue;
+ 				}
+ 				
+ 				sum += board[nx][ny];
+ 			}
+ 		}
+ 		
+ 		return sum;
+ 	}
+ 	
+ 	private static int getCross(int M, int x, int y) {
+ 		int sum = board[x][y];
+ 		int[] dx = new int[] {1, -1, 0, 0};
+ 		int[] dy = new int[] {0, 0, 1, -1};
+ 		
+ 		for(int i = 1; i < M; i++) {
+ 			for(int j = 0; j < 4; j++) {
+ 				int nx = x + (dx[j] * i);
+ 				int ny = y + (dy[j] * i);
+ 				
+ 				if(nx < 0 || board.length <= nx || ny < 0 || board.length <= ny) {
+ 					continue;
+ 				}
+ 				
+ 				sum += board[nx][ny];
+ 			}
+ 		}
+ 		
+ 		return sum;
+ 	}
+}

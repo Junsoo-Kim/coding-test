@@ -1,0 +1,67 @@
+import java.util.*;
+import java.io.*;
+
+class Solution{
+	static int[] heights;
+	static boolean[] visited;
+	static int result;
+	static int B;
+	
+ 	public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        
+        for(int t = 1; t <= T; t++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            B = Integer.parseInt(st.nextToken());
+            
+            heights = new int[N];
+            visited = new boolean[N];
+            result = Integer.MAX_VALUE;
+            
+            st = new StringTokenizer(br.readLine());
+            for(int i = 0; i < N; i++) {
+            	heights[i] = Integer.parseInt(st.nextToken());
+            }
+            
+            for(int i = 0; i < N; i++) {
+            	visited[i] = true;
+            	
+            	backtrack(0, heights[i], i);
+            	
+            	visited[i] = false;
+            }
+            
+            sb.append("#" + t + " " + result + "\n");
+        }
+        System.out.print(sb);
+    }
+ 	
+ 	private static void backtrack(int depth, int curr, int index) {
+ 		if(curr >= B) {
+			curr -= B;
+	 		result = (result > curr) ? curr : result;
+	 		return;
+ 		}
+ 		
+ 		if(depth == heights.length) {
+ 			return;
+ 		}
+ 		
+ 		for(int i = index; i < heights.length; i++) {
+ 			if(visited[i]) {
+ 				continue;
+ 			}
+ 			
+ 			visited[i] = true;
+ 			curr += heights[i];
+ 			
+ 			backtrack(depth + 1, curr, i);
+ 			
+ 			visited[i] = false;
+ 			curr -= heights[i];
+ 		}
+ 	}
+}

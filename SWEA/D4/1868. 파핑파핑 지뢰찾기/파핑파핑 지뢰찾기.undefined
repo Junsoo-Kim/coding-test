@@ -1,0 +1,126 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+	static int[] dx = new int[] {-1, 1, 0, 0, 1, 1, -1, -1};
+	static int[] dy = new int[] {0, 0, -1, 1, 1, -1, 1, -1};
+	static int[][] board;
+	static boolean[][] visited;
+	
+	public static void main(String[] args) throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int T = Integer.parseInt(br.readLine());
+		
+		for(int t = 1; t <= T; t++) {
+			int N = Integer.parseInt(br.readLine());
+			int result = 0;
+			board = new int[N][N];
+			visited = new boolean[N][N];
+			
+			// 지뢰 입력
+			for(int i = 0; i < N; i++) {
+				String line = br.readLine();
+				for(int j = 0; j < N; j++) {
+					if(line.charAt(j) == '*') {
+						board[i][j] = -1;
+						visited[i][j] = true;
+					}
+				}
+			}
+			
+			// N = 1 예외 처리
+			if(N == 1) {
+				if(board[0][0] == -1) {
+					sb.append("#" + t + " " + 0 + "\n");
+				}
+				else {
+					sb.append("#" + t + " " + 1 + "\n");
+				}
+			}
+			
+			// 숫자 입력
+			for(int i = 0; i < N; i++) {
+				for(int j = 0; j < N; j++) {
+					if(board[i][j] == 0) {
+						board[i][j] = findMineNum(i, j);
+					}
+				}
+			}
+			
+			// 0만 클릭
+			for(int i = 0; i < N; i++) {
+				for(int j = 0; j < N; j++) {
+					if(!visited[i][j] && board[i][j] == 0) {
+						bfs(i, j);
+						result++;
+					}
+				}
+			}
+			
+			// 0 아닌 남은 숫자 클릭
+			// 0과 붙어있지 않아야 남으므로 항상 1번의 클릭 필요
+			for(int i = 0; i < N; i++) {
+				for(int j = 0; j < N; j++) {
+					if(!visited[i][j] && board[i][j] > 0) {
+						result++;
+					}
+				}
+			}
+			
+			sb.append("#" + t + " " + result + "\n");
+		}
+		
+		System.out.print(sb);
+	}
+	
+	private static int findMineNum(int x, int y) {
+		int result = 0;
+		
+		for(int i = 0; i < 8; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			
+			if(nx < 0 || board.length <= nx || ny < 0 || board.length <= ny) {
+				continue;
+			}
+			
+			if(board[nx][ny] == -1) {
+				result++;
+			}
+		}
+		
+		return result;
+	}
+	
+	private static void bfs(int x, int y) {
+		Queue<int[]> queue = new ArrayDeque<>();
+		queue.offer(new int[] {x, y});
+		visited[x][y] = true;
+		
+		while(!queue.isEmpty()) {
+			int[] curr = queue.poll();
+			int currX = curr[0];
+			int currY = curr[1];
+			
+			// 
+			for(int i = 0; i < 8; i++) {
+				int nx = currX + dx[i];
+				int ny = currY + dy[i];
+				
+				if(nx < 0 || board.length <= nx || ny < 0 || board.length <= ny) {
+					continue;
+				}
+				
+				if(!visited[nx][ny] && board[nx][ny] != -1) {
+					visited[nx][ny] = true;
+					
+					// 인접 칸이 0일때만 다시 밝힘
+					if(board[nx][ny] == 0) {
+						queue.offer(new int[] {nx, ny});
+					}
+				}
+			}
+		}
+	}
+}

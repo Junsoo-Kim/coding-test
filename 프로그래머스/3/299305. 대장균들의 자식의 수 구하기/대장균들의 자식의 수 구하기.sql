@@ -1,0 +1,25 @@
+WITH CHILD_CNT AS (
+    SELECT
+        E1.ID,
+        COUNT(*) AS CHILD_CNT
+    FROM
+        ECOLI_DATA E1
+        JOIN ECOLI_DATA E2
+            ON E1.ID = E2.PARENT_ID
+    GROUP BY
+        E1.ID
+)
+
+SELECT
+    E.ID,
+    CASE
+        WHEN CHILD_CNT IS NULL
+            THEN 0
+        ELSE CHILD_CNT
+    END AS CHILD_COUNT
+FROM
+    ECOLI_DATA E
+    LEFT JOIN CHILD_CNT C
+        ON E.ID = C.ID
+ORDER BY 
+    E.ID

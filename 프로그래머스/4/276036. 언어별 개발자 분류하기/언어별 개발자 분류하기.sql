@@ -1,0 +1,38 @@
+WITH CATEGORY_CTE AS (
+    SELECT 
+        CATEGORY, 
+        SUM(CODE) AS CODE
+    FROM
+        SKILLCODES
+    GROUP BY 
+        CATEGORY
+),
+RESULT_CTE AS (
+    SELECT
+        CASE
+            WHEN SKILL_CODE & (SELECT CODE FROM CATEGORY_CTE WHERE CATEGORY = 'Front End') > 0
+                AND SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'Python') > 0
+                THEN 'A'
+            WHEN SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'C#') > 0
+                THEN 'B'
+            WHEN SKILL_CODE & (SELECT CODE FROM CATEGORY_CTE WHERE CATEGORY = 'Front End') > 0
+                AND SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'Python') = 0
+                THEN 'C'
+        END AS GRADE,
+        ID,
+        EMAIL
+    FROM 
+        DEVELOPERS
+)
+
+SELECT 
+    GRADE, 
+    ID, 
+    EMAIL
+FROM
+    RESULT_CTE
+WHERE 
+    GRADE IS NOT NULL
+ORDER BY
+    GRADE ASC,
+    ID ASC
